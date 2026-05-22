@@ -11,7 +11,10 @@ export function openBubble({ comment, pinEl, overlayEl, currentUser, isOrphaned 
 
   const pinRect = pinEl.getBoundingClientRect()
   const overlayRect = overlayEl.getBoundingClientRect()
-  const left = (pinRect.right - overlayRect.left + window.scrollX + 8)
+  const viewportWidth = window.innerWidth
+  const bubbleWidth = 280
+  const rawLeft = pinRect.right - overlayRect.left + window.scrollX + 8
+  const left = Math.min(rawLeft, viewportWidth - bubbleWidth - 20)
   const top = (pinRect.top - overlayRect.top + window.scrollY)
   bubble.style.left = `${left}px`
   bubble.style.top = `${top}px`
