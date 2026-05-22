@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "deploy": "vite build && surge dist feedback-tool.surge.sh"
   },
   "keywords": [],
   "author": "",
