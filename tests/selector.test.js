@@ -38,4 +38,8 @@ describe('getElementText', () => {
     const el = document.querySelector('p')
     expect(getElementText(el)).toHaveLength(83) // 80 + '...'
   })
+
+  test('returns empty string for null element', () => {
+    expect(getElementText(null)).toBe('')
+  })
 })

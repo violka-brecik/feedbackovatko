@@ -32,6 +32,7 @@ export function getSelector(element) {
 }
 
 export function getElementText(element) {
+  if (!element) return ''
   const text = (element.textContent || '').trim()
   if (text.length <= 80) return text
   return text.slice(0, 80) + '...'
