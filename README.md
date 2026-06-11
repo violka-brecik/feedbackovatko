@@ -24,7 +24,36 @@ https://mujweb.cz/stranka?author=viola2026
 
 ---
 
-## Možnost B — Vlastní instance (vlastní databáze)
+## Možnost B — Vlastní instance přes Git (doporučeno)
+
+Nejjednodušší způsob, jak získat vlastní kopii a snadno ji aktualizovat.
+
+### Stažení
+
+```bash
+git clone https://github.com/violka-brecik/feedbackovatko.git
+cd feedbackovatko
+npm install
+```
+
+### Aktualizace (kdykoli vyjde nová verze)
+
+```bash
+git pull
+npm install
+npm run build
+npx surge dist moje-domena.surge.sh
+```
+
+Žádné ruční stahování zipů -- stačí `git pull` a nová verze je připravená.
+
+### Vlastní konfigurace
+
+Otevři `src/config.js` a vyplň vlastní Firebase a token (viz Možnost C níže).
+
+---
+
+## Možnost C — Vlastní instance (vlastní databáze)
 
 Pokud chceš plnou izolaci s vlastní Firebase databází.
 
