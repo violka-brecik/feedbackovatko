@@ -1,9 +1,12 @@
-export function createPin({ comment, index, overlayEl, onOpen }) {
+export function createPin({ comment, index, overlayEl, onOpen, x, y }) {
   const pin = document.createElement('div')
   pin.className = 'fbt-pin'
   pin.dataset.commentId = comment.id
 
-  if (comment.selector && !document.querySelector(comment.selector)) {
+  if (comment.resolved) {
+    pin.classList.add('fbt-resolved')
+    pin.title = 'Vyřešeno'
+  } else if (comment.selector && !document.querySelector(comment.selector)) {
     pin.classList.add('fbt-orphaned')
     pin.title = 'Prvek již neexistuje'
   }
@@ -13,8 +16,8 @@ export function createPin({ comment, index, overlayEl, onOpen }) {
   number.textContent = index + 1
   pin.appendChild(number)
 
-  pin.style.left = `calc(${comment.x}% - 14px)`
-  pin.style.top = `calc(${comment.y}% - 28px)`
+  pin.style.left = `${x}px`
+  pin.style.top = `${y}px`
 
   pin.addEventListener('click', e => {
     e.stopPropagation()

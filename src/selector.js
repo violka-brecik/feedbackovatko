@@ -1,3 +1,29 @@
+const GENERIC_TAGS = new Set([
+  'div', 'section', 'article', 'main', 'header', 'footer',
+  'aside', 'nav', 'ul', 'ol', 'html', 'body', 'form'
+])
+
+export function getNearestContentElement(clientX, clientY) {
+  const offsets = [0, -15, 15, -30, 30]
+  let best = null
+  let bestArea = Infinity
+
+  for (const dx of offsets) {
+    for (const dy of offsets) {
+      const el = document.elementFromPoint(clientX + dx, clientY + dy)
+      if (!el || GENERIC_TAGS.has(el.tagName.toLowerCase())) continue
+      const rect = el.getBoundingClientRect()
+      const area = rect.width * rect.height
+      if (area > 0 && area < bestArea) {
+        bestArea = area
+        best = el
+      }
+    }
+  }
+
+  return best || document.elementFromPoint(clientX, clientY)
+}
+
 export function getSelector(element) {
   if (!element || element === document.body) return 'body'
 

@@ -4,9 +4,10 @@ export function createToolbar({ isAuthor, onToggleComments, onToggleStickyMode, 
 
   const toggleBtn = createBtn('👁 Skrýt', 'fbt-btn', () => {
     const hidden = toolbar.dataset.hidden === 'true'
-    toolbar.dataset.hidden = String(!hidden)
-    toggleBtn.textContent = hidden ? '👁 Skrýt' : '👁 Zobrazit'
-    onToggleComments(!hidden)
+    const newHidden = !hidden
+    toolbar.dataset.hidden = String(newHidden)
+    toggleBtn.textContent = newHidden ? '👁 Zobrazit' : '👁 Skrýt'
+    onToggleComments(!newHidden)
   })
 
   const commentBtn = createBtn('+ Komentovat', 'fbt-btn fbt-btn-primary', () => {

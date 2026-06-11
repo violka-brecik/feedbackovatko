@@ -13,7 +13,12 @@ export function initFirebase() {
 }
 
 function getSiteKey() {
-  return window.location.hostname.replace(/\./g, '-')
+  const hostname = window.location.hostname.replace(/\./g, '-')
+  const path = window.location.pathname
+    .replace(/\.html$/, '')
+    .replace(/\/$/, '')
+    .replace(/\//g, '-') || '-index'
+  return `${hostname}${path}`
 }
 
 function commentsRef() {
@@ -31,6 +36,7 @@ export function listenToComments(onChange) {
 export async function addComment(data) {
   return addDoc(commentsRef(), {
     ...data,
+    viewHash: window.location.hash || '',
     createdAt: serverTimestamp(),
     resolved: false,
     archived: false,

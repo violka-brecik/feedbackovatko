@@ -7,6 +7,7 @@ export function openBubble({ comment, pinEl, overlayEl, currentUser, isOrphaned 
 
   const bubble = document.createElement('div')
   bubble.className = 'fbt-bubble'
+  bubble.dataset.commentId = comment.id
   bubble.innerHTML = buildBubbleHTML(comment, currentUser, isOrphaned)
 
   const pinRect = pinEl.getBoundingClientRect()
@@ -24,12 +25,21 @@ export function openBubble({ comment, pinEl, overlayEl, currentUser, isOrphaned 
     replyCompose.style.display = replyCompose.style.display === 'none' ? '' : 'none'
   })
 
+  bubble.querySelector('.fbt-reply-textarea')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      bubble.querySelector('.fbt-send-reply')?.click()
+    }
+  })
+
   bubble.querySelector('.fbt-send-reply')?.addEventListener('click', async () => {
     const textarea = bubble.querySelector('.fbt-reply-textarea')
     const text = textarea.value.trim()
     if (!text) return
+    bubble.dataset.sending = 'true'
     await addReply(comment.id, { author: currentUser, text })
     textarea.value = ''
+    delete bubble.dataset.sending
   })
 
   bubble.querySelector('.fbt-like-btn')?.addEventListener('click', () => {
@@ -49,9 +59,12 @@ export function openBubble({ comment, pinEl, overlayEl, currentUser, isOrphaned 
           <button class="fbt-btn fbt-btn-primary fbt-save-edit" style="font-size:12px;padding:5px 10px;">Uložit</button>
           <button class="fbt-btn fbt-cancel-edit" style="font-size:12px;padding:5px 10px;">Zrušit</button>
         </div>`
-      bubble.querySelector('.fbt-save-edit').addEventListener('click', () => {
+      bubble.querySelector('.fbt-save-edit').addEventListener('click', async () => {
         const newText = bubble.querySelector('.fbt-edit-textarea').value.trim()
-        if (newText) updateComment(comment.id, { text: newText })
+        if (!newText) return
+        bubble.dataset.sending = 'true'
+        await updateComment(comment.id, { text: newText })
+        delete bubble.dataset.sending
       })
       bubble.querySelector('.fbt-cancel-edit').addEventListener('click', () => {
         textEl.innerHTML = comment.text
@@ -59,12 +72,17 @@ export function openBubble({ comment, pinEl, overlayEl, currentUser, isOrphaned 
     })
   }
 
+  bubble.addEventListener('click', e => e.stopPropagation())
   overlayEl.appendChild(bubble)
   activeBubble = bubble
 
   setTimeout(() => {
     document.addEventListener('click', closeBubbleOnOutside)
   }, 0)
+}
+
+export function getActiveBubbleCommentId() {
+  return activeBubble ? activeBubble.dataset.commentId : null
 }
 
 export function closeBubble() {

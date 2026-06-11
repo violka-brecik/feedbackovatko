@@ -4,7 +4,9 @@ export function injectStyles(pinColor) {
   const css = `
     .fbt-toolbar {
       position: fixed; bottom: 20px; right: 20px;
-      display: flex; gap: 8px; z-index: 2147483646;
+      display: flex; flex-wrap: wrap; justify-content: flex-end;
+      gap: 8px; z-index: 2147483646;
+      max-width: calc(100vw - 40px);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
     .fbt-btn {
@@ -33,7 +35,20 @@ export function injectStyles(pinColor) {
       width: 100%; pointer-events: none;
       z-index: 2147483645;
     }
-    .fbt-overlay.fbt-sticky { pointer-events: all; cursor: crosshair; }
+    .fbt-overlay.fbt-sticky { pointer-events: all; cursor: none !important; }
+    .fbt-overlay.fbt-sticky * { cursor: none !important; }
+    .fbt-overlay.fbt-sticky .fbt-bubble,
+    .fbt-overlay.fbt-sticky .fbt-bubble *,
+    .fbt-overlay.fbt-sticky .fbt-new-comment,
+    .fbt-overlay.fbt-sticky .fbt-new-comment * { cursor: auto !important; }
+
+    .fbt-cursor-pin {
+      position: fixed; width: 28px; height: 28px;
+      border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
+      background: ${pinColor}; pointer-events: none;
+      z-index: 2147483648; display: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
 
     .fbt-pin {
       position: absolute; width: 28px; height: 28px;
@@ -44,6 +59,7 @@ export function injectStyles(pinColor) {
       transition: transform .15s;
     }
     .fbt-pin:hover { transform: rotate(-45deg) scale(1.1); }
+    .fbt-pin.fbt-resolved { background: #4caf50; }
     .fbt-pin.fbt-orphaned { background: #999; }
     .fbt-pin-number {
       transform: rotate(45deg); color: white;

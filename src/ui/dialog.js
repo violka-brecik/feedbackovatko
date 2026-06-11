@@ -68,6 +68,7 @@ export function showNewCommentCompose({ x, y, overlayEl, onSubmit, onCancel }) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit() }
   })
 
+  bubble.addEventListener('click', e => e.stopPropagation())
   overlayEl.appendChild(bubble)
   setTimeout(() => textarea.focus(), 0)
   return bubble
