@@ -1,4 +1,5 @@
 import { updateComment, addReply, toggleLike } from '../firebase.js'
+import { promptForName } from './dialog.js'
 
 let activeBubble = null
 
@@ -36,6 +37,10 @@ export function openBubble({ comment, pinEl, overlayEl, currentUser, isOrphaned 
     const textarea = bubble.querySelector('.fbt-reply-textarea')
     const text = textarea.value.trim()
     if (!text) return
+    if (!currentUser) {
+      currentUser = await promptForName()
+      if (!currentUser) return
+    }
     bubble.dataset.sending = 'true'
     await addReply(comment.id, { author: currentUser, text })
     textarea.value = ''
@@ -102,16 +107,18 @@ function buildBubbleHTML(comment, currentUser, isOrphaned) {
   const likeLabel = `👍 ${comment.likes?.length || 0}`
   const ts = formatTime(comment.createdAt)
 
-  const repliesHTML = (comment.replies || []).map(r => `
+  const repliesHTML = (comment.replies || []).map(r => {
+    const authorName = r.author || 'Anonym'
+    return `
     <div class="fbt-reply">
       <div class="fbt-bubble-header" style="padding:0 0 4px;border:none;">
-        <div class="fbt-avatar">${r.author[0]}</div>
-        <span class="fbt-author-name">${r.author}</span>
+        <div class="fbt-avatar">${authorName[0]}</div>
+        <span class="fbt-author-name">${authorName}</span>
         <span class="fbt-timestamp">${formatTime(r.createdAt)}</span>
       </div>
-      <div style="color:#333;line-height:1.5;">${r.text}</div>
+      <div style="color:#333;line-height:1.5;">${r.text || ''}</div>
     </div>
-  `).join('')
+  `}).join('')
 
   return `
     ${isOrphaned ? '<div class="fbt-orphaned-badge">⚠ Prvek již neexistuje</div>' : ''}
