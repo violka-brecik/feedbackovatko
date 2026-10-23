@@ -57,6 +57,10 @@ export function openBubble({ comment, pinEl, overlayEl, currentUser, isOrphaned 
     updateComment(comment.id, { resolved: !comment.resolved })
   })
 
+  bubble.querySelector('.fbt-reopen-btn')?.addEventListener('click', () => {
+    updateComment(comment.id, { resolved: false })
+  })
+
   if (comment.author === currentUser) {
     bubble.querySelector('.fbt-edit-btn')?.addEventListener('click', () => {
       const textEl = bubble.querySelector('.fbt-bubble-text')
@@ -136,7 +140,7 @@ function buildBubbleHTML(comment, currentUser, isOrphaned) {
       <button class="fbt-action-btn fbt-like-btn ${likedByUser ? 'fbt-liked' : ''}">${likeLabel}</button>
       <button class="fbt-action-btn fbt-reply-btn">Odpovědět</button>
       ${comment.resolved
-        ? '<span class="fbt-resolved-badge">✓ Vyřešeno</span>'
+        ? '<span class="fbt-resolved-badge">✓ Vyřešeno</span><button class="fbt-action-btn fbt-reopen-btn">Znovu otevřít</button>'
         : '<button class="fbt-action-btn fbt-resolve-btn">Vyřešit</button>'
       }
     </div>

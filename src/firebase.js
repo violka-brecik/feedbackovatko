@@ -52,9 +52,12 @@ export async function updateComment(id, data) {
 export async function addReply(commentId, reply) {
   const commentDoc = doc(db, 'sites', getSiteKey(), 'comments', commentId)
   const snap = await getDoc(commentDoc)
-  const current = snap.data().replies || []
+  const data = snap.data()
+  const current = data.replies || []
+  // Odpověď u vyřešeného komentáře ho zároveň znovu otevře.
   return updateDoc(commentDoc, {
-    replies: [...current, { ...reply, createdAt: new Date() }]
+    replies: [...current, { ...reply, createdAt: new Date() }],
+    ...(data.resolved ? { resolved: false } : {})
   })
 }
 
