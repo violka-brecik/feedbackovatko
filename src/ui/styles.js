@@ -106,7 +106,11 @@ export function injectStyles(pinColor) {
     .fbt-action-btn:hover { background: #f5f5f5; }
     .fbt-action-btn.fbt-liked { color: ${pinColor}; border-color: ${pinColor}; }
     .fbt-resolve-btn { margin-left: auto; font-size: 10px; }
-    .fbt-reopen-btn { font-size: 10px; margin-left: 6px; }
+    .fbt-reopen-btn {
+      font-size: 10px; margin-left: auto;
+      background: #e8f5e9; color: #2e7d32; border-color: #c8e6c9;
+    }
+    .fbt-reopen-btn:hover { background: #fff3e0; color: #b25e00; border-color: #ffe0b2; }
     .fbt-resolved-badge {
       font-size: 10px; background: #e8f5e9; color: #2e7d32;
       border-radius: 4px; padding: 2px 7px; margin-left: auto;
