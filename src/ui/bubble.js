@@ -15,9 +15,11 @@ export function openBubble({ comment, pinEl, overlayEl, currentUser, isOrphaned 
   const overlayRect = overlayEl.getBoundingClientRect()
   const viewportWidth = window.innerWidth
   const bubbleWidth = 280
-  const rawLeft = pinRect.right - overlayRect.left + window.scrollX + 8
+  // Obě polohy jsou vůči překryvné vrstvě (overlay), která rolováním putuje s
+  // stránkou, takže rolování se do nich znovu přičítat nesmí.
+  const rawLeft = pinRect.right - overlayRect.left + 8
   const left = Math.min(rawLeft, viewportWidth - bubbleWidth - 20)
-  const top = (pinRect.top - overlayRect.top + window.scrollY)
+  const top = pinRect.top - overlayRect.top
   bubble.style.left = `${left}px`
   bubble.style.top = `${top}px`
 
