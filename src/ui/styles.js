@@ -59,7 +59,7 @@ export function injectStyles(pinColor) {
       transition: transform .15s;
     }
     .fbt-pin:hover { transform: rotate(-45deg) scale(1.1); }
-    .fbt-pin.fbt-resolved { background: #4caf50; }
+    .fbt-pin.fbt-resolved { background: #b4b9bf; opacity: .8; }
     .fbt-pin.fbt-orphaned { background: #999; }
     .fbt-pin-number {
       transform: rotate(45deg); color: white;

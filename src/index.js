@@ -96,7 +96,6 @@ function init() {
     const currentHash = window.location.hash || ''
     const visible = comments.filter(c =>
       !c.archived &&
-      !c.resolved &&
       (c.viewHash === undefined || c.viewHash === currentHash)
     )
     const PIN_STEP = 32
